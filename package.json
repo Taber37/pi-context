@@ -1,0 +1,24 @@
+{
+  "name": "local-context-development",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "Private local build of the pi-context extension",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taber37/pi-context.git"
+  },
+  "keywords": ["pi-package"],
+  "files": [
+    "docs/local-install.md",
+    "extensions/context.ts",
+    "src/measurement/index.mjs",
+    "src/pi/attribution.mjs",
+    "src/pi/chat-completions.mjs",
+    "src/pi/controller.mjs",
+    "src/view/render.mjs"
+  ],
+  "pi": {
+    "extensions": ["./extensions/context.ts"]
+  }
+}

@@ -1,6 +1,8 @@
-# Development plan: measure what disabling a server changes
+# Historical development plan: measure what disabling a server changes
 
-Deliver a read-only, local Pi extension. Success means a user can distinguish a large tool result from an expensive tool declaration and choose the right action. Do not toggle MCPs, compact history, call a model, or upload telemetry from the command.
+This is the original design and validation plan, not a description of the current UI or a release checklist. For current commands, installation and tested versions, see the [README](../README.md) and [installation guide](local-install.md).
+
+The goal was a read-only, local Pi extension that distinguishes a large retained tool result from an expensive tool declaration. The command should not toggle MCPs, compact history, call a model, or upload telemetry.
 
 ## 1. Establish the baseline before building
 
@@ -34,16 +36,12 @@ Count UTF-8 bytes of observed text. Label token estimates with their method and 
 
 Keep provider adapters separate from the pure attribution logic. Correlate observation and response within the active session; if the association is ambiguous, suppress the comparison. Retain bounded numeric aggregates and origin labels in memory, never raw requests, arguments, result contents, file contents or headers. Discard stale snapshots or label them stale after branch, session or model changes and compaction. Do not add context messages to render the report.
 
-- `/gentle:context`: show occupancy, measurement age and servers ranked by estimated avoidable input. Columns: server, exposure mode, current declarations, retained history, estimated next-call savings. Keep unknown savings distinct from zero.
-- `/gentle:context all`: expand the origin groups, methodology, shared/unknown rows and last comparable provider input. Show a useful empty state before the first snapshot.
+The original UI proposal ranked servers by avoidable input. The current dashboard instead keeps **Current footprint by MCP** separate from **If disabled · next full request** in `/gentle:context all`. The detail view also includes origins, measurement coverage and comparable provider input when available. `/gentle:context` is the compact overview. Both distinguish unknown values from zero.
 
 **Exit evidence:** command-level checks for no snapshot, one complete request, truncation, continuation, later hook rewrite and post-compaction uncertainty. Verify the command neither calls the provider nor emits synthetic secret markers from fixtures into reports or persistent storage.
 
-## 4. Ship only after an install test
+## 4. Verify local packaging before sharing the source
 
-1. Select an npm name the maintainer controls: the unscoped name `pi-context` is already occupied. The GitHub repository name need not change. Confirm license and supported Pi versions before distribution.
-2. Add an explicit Pi extension entry, `pi-package` keyword, executable package contents, repository URL and matching installation/removal instructions. Keep fixtures and local planning state out of the tarball.
-3. Inspect `npm pack --dry-run`, build the actual tarball, install it in a clean profile and run both commands. Check plain Pi and Gentle Shell; ensure no command collisions on the supported versions.
-4. For [Gentle Hub](https://gentlemanprogramming.com/gentle-hub/#join), keep the repository public with `gentle-shell-package` and `gentle-shell-extension`. Discovery is asynchronous, not guaranteed at repository creation. For the separate [Pi Gallery](https://docs.pi.dev/latest/packages), publish to npm only after release approval and verify the listing independently.
+The packaging plan called for an explicit extension entry, a tarball limited to runtime files and user documentation, and clean-profile checks of install, report commands and removal. The [installation guide](local-install.md) records the checks that ran, including their Pi and Gentle Shell version boundaries.
 
-**First development milestone:** baseline experiment and comparison matrix, not an npm release. No implementation or compatibility is claimed by this plan.
+Registry and gallery distribution were considered separately and are not part of the GitHub source delivery. The manifest remains private and unlicensed under the local build identifier `local-context-development`; the npm name `pi-context` belongs to a different project.
